@@ -1,5 +1,5 @@
 /*
-	Simple script used to examine mysterious data
+	Examining a mysterious data set - basic exploratory analysis
 */
 DROP TABLE IF EXISTS public.mystery;
 

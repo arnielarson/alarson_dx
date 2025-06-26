@@ -77,7 +77,7 @@ Quick thoughts: 100M+ records will definitely likely tax my system.  My instinct
 ### More notes with my setup: 
 
 - Note I have a local Postgres setup, newer Mac and 16GB Ram
-- Trouble loading with Postgres COPY FROM, there are 'Control-\' values, so, removed them with awk
+- Trouble loading with Postgres COPY FROM, there are 'Control-\\' values, which escaped the tab char, so, removed those lines them with awk
 - I'm going to explore several ways to do these queries.
 - A group by from a single file, shows the top 100 resources
 - A window function would enable further granular analysis.  

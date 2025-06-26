@@ -1,7 +1,7 @@
 z/*
 	Wikepedia Clickstream analysis
 	I load in several monthly aggregates of the clickstream data.
-	Each file is ~ 1.5GB, 30M+ records and is a break down of: page, refereral, referal_type, count
+	Each file is ~ 1.5GB, 30M+ records and is a break down of: referrer, page, referral_type, count
 */
 
 CREATE TABLE IF NOT EXISTS public.wiki_clickstream_1 (

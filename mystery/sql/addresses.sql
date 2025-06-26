@@ -2,6 +2,9 @@
 	School Data
 	Data Set 1: nces
 	Data Set 2: headstart
+
+  Goal: Determine overlap by address of the two data sets, identify and perform some normalization of the address fields
+  
 */
 
 DROP TABLE IF EXISTS public.nces;
