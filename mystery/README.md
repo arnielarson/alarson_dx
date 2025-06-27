@@ -61,11 +61,11 @@ Mechanism is roughly:
 
 ### Improvements
 
-Additinally, I would iterate a few more times to determine if there some more rules.  (I can think of at least a few more likely issues that could be addressed, e.g. whitespace)
+Additionally, I would iterate a few more times to determine if there some more rules.  (I can think of at least a few more likely issues that could be addressed, e.g. whitespace)
 
-- First, I don't know of a better way to do this type of text manipulation in SQL, other than the nested REPLACE functions, which is not ideal.
-- Address 2 could be inspected and further rules could be used to incorporate it.
-- To modularize, you could break up the REPLACE statements, maybe into multiple stored procedures to make this testable.
+- First, I don't know of a better way to do this type of text manipulation in SQL, other than the nested REPLACE functions, which is not ideal for maintainability.
+- Address 2 in headstart could be inspected and further rules could be used to incorporate it.
+- To modularize, you could break up the REPLACE statements, maybe into multiple stored procedures or functions to make this modular and testable.
 - You could also try some sort of fuzzy matching to possibly catch more longtail matches, but then also may need to consider false positives.
 - In reality, address standardization is hard and using a 3rd party to standardize is potentially a better alternative
 
