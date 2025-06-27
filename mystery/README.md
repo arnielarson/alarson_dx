@@ -49,9 +49,19 @@ Mechanism is roughly:
 - Plan to compare (JOIN) on something like DISTINCT CONCAT(TRIM(address1),ZIP)
 - Before normalizations I found 40 matches, after normalizations I found 63 matches.
 
-Additinally, I would iterate a few more times to determine if there some more rules.  (I can think of at least a few more likely issues that could be addressed, e.g. whitespace)
+### Questions
 
-Options to make this better:
+- How many distinct addresses does each dataset have?
+  - Headstart: approx 310
+  - NCSE: approx 2096
+- How many addresses overlap?
+  - approx 63
+- Write a query to return the headstart dataset and a flag indicating if there is a match with NCSE:
+  - See SQL.  Required a bit of different logic, a left join and need to be careful of duplicates within the NCSE data
+
+### Improvements
+
+Additinally, I would iterate a few more times to determine if there some more rules.  (I can think of at least a few more likely issues that could be addressed, e.g. whitespace)
 
 - First, I don't know of a better way to do this type of text manipulation in SQL, other than the nested REPLACE functions, which is not ideal.
 - Address 2 could be inspected and further rules could be used to incorporate it.

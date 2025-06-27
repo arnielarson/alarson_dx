@@ -126,3 +126,63 @@ INNER JOIN
 (SELECT DISTINCT CONCAT(norm_address, zip5) addr_tag FROM hs_addr) hs 
 ON hs.addr_tag=nc.addr_tag 
 
+
+/*
+ * 	Adding a query to include distinct addresses in each set and query
+ */
+ */
+WITH ncse_addr AS (
+  SELECT 
+    street_address addr1, ZIP::TEXT zip5,
+    REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
+    REPLACE(REPLACE(TRIM(UPPER(street_address)), '-', ' '),'"',''),'.',''),' DRIVE', ' DR')
+    ,' ROAD',' RD'),' AVENUE',' AVE'),' STREET', ' ST'), ' BOULEVARD', ' BLVD') AS norm_address_tag 
+  FROM public.nces
+), hs_addr AS (
+  SELECT 
+    addressLineOne addr1, zipFive zip5,
+    REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
+    REPLACE(REPLACE(TRIM(UPPER(addressLineOne)), '-', ' '),'"',''),'.',''),' DRIVE', ' DR')
+    ,' ROAD',' RD'),' AVENUE',' AVE'),' STREET', ' ST'), ' BOULEVARD', ' BLVD') AS norm_address_tag
+  FROM public.headstart
+)
+SELECT 'ncse_dist_addr_count' AS label,
+  COUNT( DISTINCT norm_address) count
+FROM ncse_addr
+UNION ALL
+SELECT 'hs_dist_addr_count' AS label,
+  COUNT( DISTINCT norm_address) count
+FROM hs_addr  
+
+
+/*
+ * 	Adding a query to return head start data, and a flag indicating if a match to NCSE was found
+ *  Need to DISTINCT the address tag for matching to NCSE so as not to duplicate records..
+ */
+ */
+WITH ncse AS (
+  SELECT 
+    DISTINCT CONCAT(
+	    REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
+    	REPLACE(REPLACE(TRIM(UPPER(street_address)), '-', ' '),'"',''),'.',''),' DRIVE', ' DR')
+	    ,' ROAD',' RD'),' AVENUE',' AVE'),' STREET', ' ST'), ' BOULEVARD', ' BLVD'), ZIP::TEXT
+	 ) AS addr_tag
+  FROM public.nces
+), hs AS (
+  SELECT 
+    *, 
+    CONCAT(
+	    REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
+    	REPLACE(REPLACE(TRIM(UPPER(addressLineOne)), '-', ' '),'"',''),'.',''),' DRIVE', ' DR')
+	    ,' ROAD',' RD'),' AVENUE',' AVE'),' STREET', ' ST'), ' BOULEVARD', ' BLVD'), zipFive
+	) AS addr_tag
+  FROM public.headstart
+)
+SELECT
+  hs.name, hs.typestring, hs.addresslineone, hs.addr_tag, ncse.addr_tag,
+  CASE WHEN ncse.addr_tag IS NOT NULL THEN TRUE ELSE FALSE END AS ncse_match_flag
+ FROM hs LEFT JOIN ncse ON hs.addr_tag = ncse.addr_tag
+  
+  
+  
+  
